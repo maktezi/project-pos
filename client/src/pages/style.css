@@ -1,0 +1,27 @@
+/* POS Page */
+.title {
+    padding: 10px;
+    margin-bottom: -5px;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.card {
+    width: 1250px;
+    height: 83vh;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: auto;
+}
+
+.block {
+    margin: 5px;
+}
+
+.stocks {
+    margin-top: -15px;
+}

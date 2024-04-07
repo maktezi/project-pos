@@ -1,0 +1,144 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Rice",
+            "price": 50.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 2,
+            "name": "Eggs",
+            "price": 6.50,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 3,
+            "name": "Chicken",
+            "price": 150.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 4,
+            "name": "Pork",
+            "price": 180.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 5,
+            "name": "Beef",
+            "price": 225.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 6,
+            "name": "Fish",
+            "price": 120.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 7,
+            "name": "Milk",
+            "price": 80.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 8,
+            "name": "Bread",
+            "price": 40.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 9,
+            "name": "Vegetables",
+            "price": 60.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 10,
+            "name": "Fruits",
+            "price": 90.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 11,
+            "name": "Cooking Oil",
+            "price": 70.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 12,
+            "name": "Sugar",
+            "price": 45.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 13,
+            "name": "Salt",
+            "price": 20.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 14,
+            "name": "Cooking Sauce",
+            "price": 55.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 15,
+            "name": "Spices",
+            "price": 30.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 16,
+            "name": "Canned Goods",
+            "price": 65.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 17,
+            "name": "Instant Noodles",
+            "price": 25.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 18,
+            "name": "Instant Coffee",
+            "price": 75.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 19,
+            "name": "Tea",
+            "price": 60.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        },
+        {
+            "id": 20,
+            "name": "Cereals",
+            "price": 85.00,
+            "image": "https://via.placeholder.com/150",
+            "stocks": 100
+        }
+    ]
+}
