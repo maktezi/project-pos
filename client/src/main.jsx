@@ -5,15 +5,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './main.css'
-import Dashboard from './pages/Dashboard.jsx';
-import PosPage from './pages/PosPage.jsx';
-import MainLayout from './layout/MainLayout.jsx';
+import Products from './pages/Products';
+import PosPage from './pages/PosPage';
+import MainLayout from './layout/MainLayout';
 
 const router = createBrowserRouter([
   { path: "/",
     element: <MainLayout /> },
-  { path: "/dashboard",
-    element: <Dashboard /> },
+  { path: "/products",
+    element: <Products /> },
   { path: "/pos page",
     element: <PosPage /> },
 ]);

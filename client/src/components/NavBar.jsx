@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ThemeMode from './Theme';
 import { Link } from 'react-router-dom';
 
-const pages = ['Dashboard', 'POS Page'];
+const pages = ['Products', 'POS Page'];
 
 function NavBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

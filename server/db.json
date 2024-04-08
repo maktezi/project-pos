@@ -3,141 +3,141 @@
         {
             "id": 1,
             "name": "Rice",
-            "price": 50.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 50.57,
+            "image": "https://thumbs.dreamstime.com/b/raw-rice-canvas-sack-39116198.jpg",
             "stocks": 100
         },
         {
             "id": 2,
             "name": "Eggs",
             "price": 6.50,
-            "image": "https://via.placeholder.com/150",
+            "image": "https://kidseatincolor.com/wp-content/uploads/2022/02/eggs-e1648216350119-500x500.jpeg",
             "stocks": 100
         },
         {
             "id": 3,
             "name": "Chicken",
-            "price": 150.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 150.43,
+            "image": "https://www.simplyrecipes.com/thmb/Sw2rWO2l615LjOnmUyDIWjAMDKg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2007__04__honey-glazed-roast-chicken-horiz-a-1800-2057270028084ff2bdb54fcb0f2d3227.jpg",
             "stocks": 100
         },
         {
             "id": 4,
             "name": "Pork",
-            "price": 180.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 180.23,
+            "image": "https://img.taste.com.au/-firTHFw/taste/2023/03/glazed-pork-belly-185799-1.jpg",
             "stocks": 100
         },
         {
             "id": 5,
             "name": "Beef",
-            "price": 225.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 225.77,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Standing-rib-roast.jpg/800px-Standing-rib-roast.jpg",
             "stocks": 100
         },
         {
             "id": 6,
             "name": "Fish",
-            "price": 120.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 120.36,
+            "image": "https://www.thoughtco.com/thmb/WvbsHeC8Ci7Ng5qyEOof35A0pvc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/fish2GE-57ed128f5f9b586c35a3dcff.jpg",
             "stocks": 100
         },
         {
             "id": 7,
             "name": "Milk",
-            "price": 80.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 80.91,
+            "image": "https://media.post.rvohealth.io/wp-content/uploads/2022/05/soy-milk-bottle-732-549-feature-thumb-732x549.jpg",
             "stocks": 100
         },
         {
             "id": 8,
             "name": "Bread",
-            "price": 40.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 40.83,
+            "image": "https://d2t3trus7wwxyy.cloudfront.net/catalog/product/g/a/gardenia-classic-thick-slice-600g_2.jpg",
             "stocks": 100
         },
         {
             "id": 9,
             "name": "Vegetables",
-            "price": 60.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 60.76,
+            "image": "https://www.hsph.harvard.edu/nutritionsource/wp-content/uploads/sites/30/2012/09/vegetables-and-fruits-farmers-market.jpg",
             "stocks": 100
         },
         {
             "id": 10,
             "name": "Fruits",
-            "price": 90.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 90.52,
+            "image": "https://www.diagnosisdiet.com/assets/images/c/fruit-og-d176ef00.jpg",
             "stocks": 100
         },
         {
             "id": 11,
             "name": "Cooking Oil",
-            "price": 70.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 70.87,
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSFQukMabKpvFG99j7_FONl_GtGUDRYAix6ZUfzZJmtA&s",
             "stocks": 100
         },
         {
             "id": 12,
             "name": "Sugar",
-            "price": 45.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 45.61,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Sucre_blanc_cassonade_complet_rapadura.jpg",
             "stocks": 100
         },
         {
             "id": 13,
             "name": "Salt",
-            "price": 20.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 20.29,
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJYuYbrea46-0YSSmejalAEA0QMgkPaC5R74ssogxZmg&s",
             "stocks": 100
         },
         {
             "id": 14,
             "name": "Cooking Sauce",
-            "price": 55.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 55.83,
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQXxxye7Cqxxf8cSMI3PL2jqj81tuWB3DJA3TkC02lcw&s",
             "stocks": 100
         },
         {
             "id": 15,
             "name": "Spices",
-            "price": 30.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 30.44,
+            "image": "https://nurserylive.com/cdn/shop/articles/indian-spices-602199.jpg?v=1679748509",
             "stocks": 100
         },
         {
             "id": 16,
             "name": "Canned Goods",
-            "price": 65.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 65.49,
+            "image": "https://www.thedailymeal.com/img/gallery/13-canned-foods-you-should-avoid-at-the-grocery-store/l-intro-1688139829.jpg",
             "stocks": 100
         },
         {
             "id": 17,
             "name": "Instant Noodles",
-            "price": 25.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 25.58,
+            "image": "https://primomart.ph/cdn/shop/products/107879_2400x1779_c40ed72d-8d00-463f-bf7c-cfe41eef63ea_945x700.jpg?v=1598750860",
             "stocks": 100
         },
         {
             "id": 18,
             "name": "Instant Coffee",
-            "price": 75.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 75.89,
+            "image": "https://down-ph.img.susercontent.com/file/ph-11134201-23030-fu3dkksw0kov4c",
             "stocks": 100
         },
         {
             "id": 19,
             "name": "Tea",
-            "price": 60.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 60.59,
+            "image": "https://www.allrecipes.com/thmb/NFy4q5C38-ivZnk4nXGuiWgqUEc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Why-Does-Tea-Make-You-Nauseated-4x3-11186feb90ad4a04a7516121d955947a.png",
             "stocks": 100
         },
         {
             "id": 20,
             "name": "Cereals",
-            "price": 85.00,
-            "image": "https://via.placeholder.com/150",
+            "price": 85.71,
+            "image": "https://www.nestle-cereals.com/ph/sites/g/files/qirczx921/files/styles/1_1_768px_width/public/2023-01/Fitnesse%20Original_0.png.webp?itok=-SvJI9AY",
             "stocks": 100
         }
     ]
