@@ -7,9 +7,17 @@
 }
 
 .total {
-    padding-top: 30px;
-    padding-bottom: 50px;
-    margin-left: 270px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* padding-left: 300px; */
+}
+
+.total-box1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 20px;
 }
 
 .card {
@@ -29,8 +37,15 @@
 .cart-card {
     display: block;
     /* margin: auto; */
-    padding-left: 20px;
+    padding-left: 10px;
     padding-top: 20px;
+}
+
+.cartReceipt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
 }
 
 .row {
@@ -47,4 +62,21 @@
 .stocks {
     margin-top: -30px;
     margin-left: 120px;
+}
+
+.misc-box {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    justify-content: space-between;
+    padding-right: 20px;
+}
+
+.qr-scanner {
+    width: 300px;
+}
+
+.qr-scanner img {
+    width: 180px;
+    color: white;
 }
