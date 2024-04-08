@@ -6,7 +6,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 const ThemeMode = () => {
-    const [toggleDarkMode, setToggleDarkMode] = useState(true);
+    const [toggleDarkMode, setToggleDarkMode] = useState(false);
 
     const toggleDarkTheme = () => {
         setToggleDarkMode(!toggleDarkMode);
