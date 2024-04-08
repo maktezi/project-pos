@@ -2,13 +2,35 @@
 .title {
     padding: 10px;
     margin-bottom: -5px;
-    margin-top: 5px;
+    margin-top: -10px;
     margin-left: 20px;
 }
 
+.total {
+    padding-top: 30px;
+    padding-bottom: 50px;
+    margin-left: 270px;
+}
+
 .card {
+    display: flex;
     width: 1250px;
     height: 83vh;
+}
+
+#border-none {
+    border-radius: 0;
+}
+
+.products-card {
+    margin: 20px;
+}
+
+.cart-card {
+    display: block;
+    /* margin: auto; */
+    padding-left: 20px;
+    padding-top: 20px;
 }
 
 .row {
@@ -23,5 +45,6 @@
 }
 
 .stocks {
-    margin-top: -15px;
+    margin-top: -30px;
+    margin-left: 120px;
 }
