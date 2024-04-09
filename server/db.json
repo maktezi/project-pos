@@ -32,7 +32,7 @@
             "id": 5,
             "name": "Beef",
             "price": 225.77,
-            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Standing-rib-roast.jpg/800px-Standing-rib-roast.jpg",
+            "image": "https://www.shutterstock.com/image-photo/raw-beef-steak-rosemary-peppercorns-600nw-2292399653.jpg",
             "stocks": 100
         },
         {
@@ -46,14 +46,14 @@
             "id": 7,
             "name": "Milk",
             "price": 80.91,
-            "image": "https://media.post.rvohealth.io/wp-content/uploads/2022/05/soy-milk-bottle-732-549-feature-thumb-732x549.jpg",
+            "image": "https://www.alaskamilk.com/wp-content/uploads/2018/04/Alaska-Fresh-1L-1-1.png",
             "stocks": 100
         },
         {
             "id": 8,
             "name": "Bread",
             "price": 40.83,
-            "image": "https://d2t3trus7wwxyy.cloudfront.net/catalog/product/g/a/gardenia-classic-thick-slice-600g_2.jpg",
+            "image": "https://www.allrecipes.com/thmb/CjzJwg2pACUzGODdxJL1BJDRx9Y=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/6788-amish-white-bread-DDMFS-4x3-6faa1e552bdb4f6eabdd7791e59b3c84.jpg",
             "stocks": 100
         },
         {
@@ -137,7 +137,7 @@
             "id": 20,
             "name": "Cereals",
             "price": 85.71,
-            "image": "https://www.nestle-cereals.com/ph/sites/g/files/qirczx921/files/styles/1_1_768px_width/public/2023-01/Fitnesse%20Original_0.png.webp?itok=-SvJI9AY",
+            "image": "https://www.shutterstock.com/image-photo/corn-flakes-milk-splash-white-600nw-2149257935.jpg",
             "stocks": 100
         }
     ]
