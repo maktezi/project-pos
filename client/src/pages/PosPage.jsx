@@ -30,33 +30,33 @@ const PosPage = () => {
     const [totalAmount, setTotalAmount] = useState(0);
 
 // Fetch Localhost DBJSON
+    // const fetchProducts = async () => {
+    //     try {
+    //         setIsLoading(true);
+    //         const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
+    //         setProducts(response.data);
+    //         setIsLoading(false);
+    //     } catch (error) {
+    //         console.error('Error fetching products:', error);
+    //     }
+    // };
+
+// Fetch Data Online DBJSON
     const fetchProducts = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-            setProducts(response.data);
+            const response = await axios.get(import.meta.env.VITE_API_URL, {
+                headers: {
+                    'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
+                }
+            });
+            setProducts(response.data.record.products);
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching products:', error);
+            setIsLoading(false);
         }
     };
-
-// Fetch Data Online DBJSON
-// const fetchProducts = async () => {
-//     try {
-//         setIsLoading(true);
-//         const response = await axios.get(import.meta.env.VITE_API_URL, {
-//             headers: {
-//                 'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
-//             }
-//         });
-//         setProducts(response.data.record.products);
-//         setIsLoading(false);
-//     } catch (error) {
-//         console.error('Error fetching products:', error);
-//         setIsLoading(false);
-//     }
-// };
 
 
     const addProductToCart = async(product) => {
