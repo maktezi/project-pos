@@ -1,12 +1,13 @@
-## Getting stated
+# Getting stated
 
 ### Initialize the project locally
 ```
 `npm install`
 ```
 
+### And play with the local dev environment
 ```
-`npm run dev` and play with the local dev environment.
+`npm run dev`
 ```
 
 ### Read the documentation
