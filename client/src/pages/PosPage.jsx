@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MainLayout from '../layout/MainLayout';
 import axios from 'axios';
 import ImageList from '@mui/material/ImageList';
@@ -6,6 +6,8 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,9 +20,10 @@ import TablePagination from '@mui/material/TablePagination';
 import { toast } from 'react-toastify';
 import Card from '@mui/material/Card';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { ComponentToPrint } from '../components/ComponentToPrint';
+import { useReactToPrint } from 'react-to-print';
+// import QrScanner from 'react-qr-scanner';
 import './style.css'
 
 const PosPage = () => {
@@ -30,47 +33,62 @@ const PosPage = () => {
     const [totalAmount, setTotalAmount] = useState(0);
 
 // Fetch Localhost DBJSON
-    // const fetchProducts = async () => {
-    //     try {
-    //         setIsLoading(true);
-    //         const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-    //         setProducts(response.data);
-    //         setIsLoading(false);
-    //     } catch (error) {
-    //         console.error('Error fetching products:', error);
-    //     }
-    // };
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             setIsLoading(true);
+    //             const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
+    //             setProducts(response.data);
+    //             setIsLoading(false);
+    //         } catch (error) {
+    //             console.error('Error fetching products:', error);
+    //             setIsLoading(false);
+    //         }
+    //     };
+
+    //     fetchProducts();
+    // }, []);
+
 
 // Fetch Data Online DBJSON
-    const fetchProducts = async () => {
-        try {
-            setIsLoading(true);
-            const response = await axios.get(import.meta.env.VITE_API_URL, {
-                headers: {
-                    'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
-                }
-            });
-            setProducts(response.data.record.products);
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error fetching products:', error);
-            setIsLoading(false);
-        }
-    };
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setIsLoading(true);
+                const response = await axios.get(import.meta.env.VITE_API_URL, {
+                    headers: {
+                        'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
+                    }
+                });
+                setProducts(response.data.record.products);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                setIsLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
 
-    const addProductToCart = async(product) => {
-        console.log(product);
-        let findProductInCart = await cart.find(i=>{
+    const addProductToCart = async (product) => {
+        const timestamp = Date.now();
+        const productWithTimestamp = {
+            ...product,
+            timestamp: timestamp
+        };
+    
+        let findProductInCart = await cart.find(i => {
             return i.id === product.id
         });
-
+    
         if (findProductInCart) {
             let newCart = [];
             let newItem;
-
+    
             cart.forEach(cartItem => {
-                if(cartItem.id === product.id){
+                if (cartItem.id === product.id) {
                     newItem = {
                         ...cartItem,
                         quantity: cartItem.quantity + 1,
@@ -81,21 +99,21 @@ const PosPage = () => {
                     newCart.push(cartItem);
                 }
             });
-
+    
             setCart(newCart);
-            toast.success(`${newItem.name} added to Cart`, {
+            toast.info(`${newItem.name} quantity added`, {
                 autoClose: 1000,
                 theme: "dark",
             });
-
+    
         } else {
             let addingProduct = {
-                ...product,
+                ...productWithTimestamp,
                 'quantity': 1,
                 'totalAmount': product.price,
             }
             setCart([...cart, addingProduct]);
-            toast.success(`${product.name} added to Cart`, {
+            toast.success(`${product.name} added to cart`, {
                 autoClose: 1000,
                 theme: "dark",
             });
@@ -118,7 +136,7 @@ const PosPage = () => {
             });
     
             setCart(newCart);
-            toast.success(`${product.name} added to Cart`, {
+            toast.info(`${product.name} quantity added`, {
                 autoClose: 1000,
                 theme: "dark",
             });
@@ -129,7 +147,7 @@ const PosPage = () => {
                 totalAmount: parseFloat(product.price).toFixed(2)
             };
             setCart([...cart, addingProduct]);
-            toast.success(`${product.name} added to Cart`, {
+            toast.success(`${product.name} added to cart`, {
                 autoClose: 1000,
                 theme: "dark",
             });
@@ -149,24 +167,20 @@ const PosPage = () => {
         }).filter(cartItem => cartItem.quantity > 0);
     
         setCart(newCart);
-        toast.error(`${product.name} removed to Cart`, {
+        toast.warning(`${product.name} quantity lessened`, {
             autoClose: 1000,
             theme: "dark",
         });
     }
 
-    const removeProduct = async(product) => {
+    const removeProductFromCart = async(product) => {
         const newCart = cart.filter(cartItem => cartItem.id !== product.id);
         setCart(newCart);
-        toast.error(`${product.name} removed from Cart`, {
+        toast.error(`${product.name} removed from cart`, {
             autoClose: 1000,
             theme: "dark",
         });
     }
-
-    useEffect(() => {
-        fetchProducts();
-    },[]);
 
     const clearCart = () => {
         setCart([]);
@@ -185,6 +199,16 @@ const PosPage = () => {
         setTotalAmount(newTotalAmount);
     },[cart])
 
+    const componentRef = useRef(null);
+
+    const handleReactToPrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    const handlePrint = () => {
+        handleReactToPrint();
+    };
+
     // useEffect(() => {
     //     console.log(products);
     // }, [products]);
@@ -201,12 +225,16 @@ const PosPage = () => {
         setPage(0);
     };
 
+    // const handleError = err => {
+    //     console.error(err);
+    // };
+
     return (
         <MainLayout>
             <div className='card'>
                 <div className='products-card'>
-                    <h1 className='title'>Add Products</h1>
-                    <ImageList className='row' sx={{ width: 1200, height: 750 }} cols={6}>
+                    <h1 className='title'>Products</h1>
+                    <ImageList className='row' sx={{ width: 1200, height: 800 }} cols={5}>
                         {isLoading ? 'Loading...' : (
                             products
                                 .slice()
@@ -214,13 +242,13 @@ const PosPage = () => {
                                 .map((product) => (
                                     <ImageListItem className='block' key={product.id}>
                                         <img
-                                            src={product.image}
+                                            src={`${product.image}?w=248&fit=crop&auto=format`}
                                             alt={product.name}
                                             loading="lazy"
                                         />
                                         <ImageListItemBar
                                             title={product.name}
-                                            subtitle={`₱ ${product.price}`}
+                                            subtitle={`₱ ${(product.price).toLocaleString()}`}
                                             position="below"
                                             actionIcon={
                                                 <IconButton
@@ -228,13 +256,13 @@ const PosPage = () => {
                                                     aria-label="add"
                                                     onClick={() => addProductToCart(product)}
                                                 >
-                                                    <AddIcon style={{ zIndex: 5 }} color='primary'/>
+                                                    <ShoppingCartIcon style={{ zIndex: 5 }} color='success'/>
                                                 </IconButton>
                                             }
                                         />
                                         <ImageListItemBar
                                             className='stocks'
-                                            subtitle={`Stock ${product.stocks}`}
+                                            subtitle={`Stock: ${product.stocks}`}
                                             position="below"
                                         />
                                     </ImageListItem>
@@ -247,7 +275,9 @@ const PosPage = () => {
                     <div className='cart-box'>
                         <div className='cartReceipt'>
                             <h1 className='title'>Cart</h1>
-                            <Button variant='contained' href='#' startIcon={<LocalPrintshopIcon/>}>Receipt</Button>
+                            <div style={{ display: 'none' }}>
+                                <ComponentToPrint cart={cart} totalAmount={totalAmount} ref={componentRef} />
+                            </div>
                         </div>
                         <TableContainer id='border-none' component={Paper}>
                             <TablePagination
@@ -262,35 +292,41 @@ const PosPage = () => {
                             <Table sx={{ minWidth: 650, height: 480 }} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><h4>Action</h4></TableCell>
+                                        <TableCell ><h4>Action</h4></TableCell>
                                         {/* <TableCell><h4>#</h4></TableCell> */}
-                                        <TableCell><h4>Name</h4></TableCell>
+                                        <TableCell><h4>Item</h4></TableCell>
                                         <TableCell><h4>Price</h4></TableCell>
-                                        <TableCell><h4>Qty</h4></TableCell>
-                                        <TableCell><h4>Total</h4></TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}><h4>Qty/Kg</h4></TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}><h4>Total</h4></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {cart.length > 0 ? cart
+                                        .sort((a, b) => b.timestamp - a.timestamp)
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((cartProduct, key) => (
                                             <TableRow key={key={key}}>
-                                                <TableCell >
-                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => addOneProductToCart(cartProduct)}>
-                                                        <AddCircleIcon color='success' />
-                                                    </IconButton>
-                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => removeOneProductFromCart(cartProduct)}>
-                                                        <RemoveCircleIcon color='warning' />
-                                                    </IconButton>
-                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => removeProduct(cartProduct)}>
-                                                        <DeleteForeverIcon color='error' />
+                                                <TableCell>
+                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => removeProductFromCart(cartProduct)}>
+                                                        <DeleteIcon color='error' />
                                                     </IconButton>
                                                 </TableCell>
                                                 {/* <TableCell component="th" scope="row">{cartProduct.id}</TableCell> */}
-                                                <TableCell >{cartProduct.name}</TableCell>
-                                                <TableCell >₱ {cartProduct.price}</TableCell>
-                                                <TableCell >{cartProduct.quantity}</TableCell>
-                                                <TableCell >₱ <b>{cartProduct.totalAmount}</b></TableCell>
+                                                <TableCell><b>{cartProduct.name}</b></TableCell>
+                                                <TableCell>₱ {cartProduct.price}</TableCell>
+                                                <TableCell style={{ textAlign: 'center' }}>
+                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => addOneProductToCart(cartProduct)}>
+                                                        <AddIcon color='primary' />
+                                                    </IconButton>
+                                                    <b>{cartProduct.quantity}</b>
+                                                    {cartProduct.quantity > 1 && (
+                                                        <IconButton style={{ padding: "1px 1px" }} onClick={() => removeOneProductFromCart(cartProduct)}>
+                                                            <RemoveIcon color='error' />
+                                                        </IconButton>
+                                                    )}
+                                                </TableCell>
+
+                                                <TableCell style={{ textAlign: 'center' }}>₱ <b>{(cartProduct.totalAmount).toLocaleString()}</b></TableCell>
                                             </TableRow>
                                         )) : 
                                         <TableRow>
@@ -304,31 +340,57 @@ const PosPage = () => {
 
                     <div className='total-box'>
                         <Card className='total-box1'>
-                        <Button startIcon={<DeleteForeverIcon />} variant='contained' color='error' onClick={clearCart}>Clear Cart</Button>
-                        <h3 className='title total'>Total Amount: ₱ {totalAmount.toLocaleString()}</h3>
+                            {cart.length > 0 && (
+                                <>
+                                    <Button
+                                        startIcon={<DeleteForeverIcon />}
+                                        variant='contained'
+                                        color='error'
+                                        onClick={clearCart}
+                                    >
+                                        Cart
+                                    </Button>
+                                    <h3 className='total'>Total Amount:</h3>
+                                    <h2 className='title'>₱ {totalAmount.toLocaleString()}</h2>
+                                </>
+                            )}
                         </Card>
                     </div>
 
                     <div className='misc-box'>
                         <div className='qr-scanner'>
-                            <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png'/>
+                        {/* <QrScanner
+                            delay={300}
+                            onError={handleError}
+                            onScan={addProductToCart}
+                            style={{ width: '100%' }}
+                        /> */}
+                        <img src='https://play-lh.googleusercontent.com/9HT3x5ccHcOdhBgLVsNEE6uV9tsCy4GJkoQ8SiJid6xxdhoZnXtyIVhyFEBzoRvAjc4' />
                         </div>
-                        <div className='cash-title'>
-                            <div>
-                                <h2>CASH:</h2>
-                            </div>
-                            <div>
-                                <h2>CHANGE:</h2>
-                            </div>
-                        </div>
-                        <div className='cash-number'>
-                            <div>
-                                <h2>XXXX.XX</h2>
-                            </div>
-                            <div>
-                                <h2>XXX.XX</h2>
-                            </div>
-                        </div>
+
+                        {cart.length > 0 && (
+                            <>
+                                <div className='cash-title'>
+                                    <div>
+                                        <h2>CASH:</h2>
+                                    </div>
+                                    <div>
+                                        <h2>CHANGE:</h2>
+                                    </div>
+                                </div>
+                                <div className='cash-number'>
+                                    <div>
+                                        <h2>XXXX.XX</h2>
+                                    </div>
+                                    <div>
+                                        <h2>XXX.XX</h2>
+                                    </div>
+                                </div>
+                                <div className='pay-now'>
+                                    <Button onClick={handlePrint} variant='contained' id='pay-button'>Pay Now</Button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
