@@ -23,6 +23,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { ComponentToPrint } from '../components/ComponentToPrint';
 import { useReactToPrint } from 'react-to-print';
+import FormControl from '@mui/material/FormControl';
+import FilledInput from '@mui/material/FilledInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
 // import QrScanner from 'react-qr-scanner';
 import './style.css'
 
@@ -31,6 +35,7 @@ const PosPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [cart, setCart] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [tenderedCash, setTenderedCash] = useState(0);
 
 // Fetch Localhost DBJSON
     // useEffect(() => {
@@ -225,6 +230,14 @@ const PosPage = () => {
         setPage(0);
     };
 
+    const handleChangeAmount = () => {
+        return tenderedCash ? parseFloat(tenderedCash) : 0;
+    };
+
+    const handleTenderedCash = (event) => {
+        setTenderedCash(event.target.value);
+    };
+    
     // const handleError = err => {
     //     console.error(err);
     // };
@@ -276,7 +289,7 @@ const PosPage = () => {
                         <div className='cartReceipt'>
                             <h1 className='title'>Cart</h1>
                             <div style={{ display: 'none' }}>
-                                <ComponentToPrint cart={cart} totalAmount={totalAmount} ref={componentRef} />
+                                <ComponentToPrint cart={cart} totalAmount={totalAmount} tenderedCash={tenderedCash} handleChangeAmount={handleChangeAmount} ref={componentRef} />
                             </div>
                         </div>
                         <TableContainer id='border-none' component={Paper}>
@@ -351,7 +364,7 @@ const PosPage = () => {
                                         Cart
                                     </Button>
                                     <h3 className='total'>Total Amount:</h3>
-                                    <h2 className='title'>₱ {totalAmount.toLocaleString()}</h2>
+                                    <h3 className='title'>₱ {totalAmount.toLocaleString()}</h3>
                                 </>
                             )}
                         </Card>
@@ -365,25 +378,28 @@ const PosPage = () => {
                             onScan={addProductToCart}
                             style={{ width: '100%' }}
                         /> */}
-                        <img src='https://play-lh.googleusercontent.com/9HT3x5ccHcOdhBgLVsNEE6uV9tsCy4GJkoQ8SiJid6xxdhoZnXtyIVhyFEBzoRvAjc4' />
+                        <img src='https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg' />
                         </div>
 
                         {cart.length > 0 && (
                             <>
-                                <div className='cash-title'>
-                                    <div>
-                                        <h2>CASH:</h2>
-                                    </div>
-                                    <div>
-                                        <h2>CHANGE:</h2>
-                                    </div>
-                                </div>
                                 <div className='cash-number'>
-                                    <div>
-                                        <h2>XXXX.XX</h2>
+                                    <div className='cash-tendered'>
+                                        <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                                            <InputLabel htmlFor="cash-tendered">Cash Tendered</InputLabel>
+                                            <FilledInput
+                                                style={{ fontWeight: 800, fontSize: '20px', width: '200px' }}
+                                                id="cash-tendered"
+                                                value={tenderedCash}
+                                                onChange={handleTenderedCash}
+                                                startAdornment={<InputAdornment position="start">₱</InputAdornment>}
+                                            />
+                                        </FormControl>
                                     </div>
                                     <div>
-                                        <h2>XXX.XX</h2>
+                                        {tenderedCash > 0 && (
+                                            <h2 className='title-change'>CHANGE: ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</h2>
+                                        )}
                                     </div>
                                 </div>
                                 <div className='pay-now'>
