@@ -14,7 +14,13 @@
     border: 1px solid black
 }
 
-.total-amount {
+.amount-container {
     margin-top: -50px;
+}
+
+.total-amount {
     margin-left: 570px;
+    text-align: end;
+    margin-bottom: -20px;
+    padding-right: 90px;
 }

@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import './receipt.css'
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {
-  const {cart, totalAmount} = props;
+  const {cart, totalAmount, tenderedCash, handleChangeAmount} = props;
 
   return (
     <div ref={ref}>
@@ -45,8 +45,10 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         </Table>
         </div>
     </TableContainer>
-    <div className='total-amount'>
-      <h4>Total Amount: ₱ {(totalAmount).toLocaleString()} </h4>
+    <div className='amount-container'>
+      <p className='total-amount'>Total Amount: ₱ {(totalAmount).toLocaleString()} </p>
+      <p className='total-amount'>Tendered Cash: ₱ {(tenderedCash).toLocaleString()} </p>
+      <p className='total-amount'>Change: ₱ {(handleChangeAmount() - totalAmount).toLocaleString()} </p>
     </div>
     </div>
   );
