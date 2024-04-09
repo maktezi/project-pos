@@ -119,7 +119,7 @@ function TablePaginationActions(props) {
         <MainLayout>
             <div className='card'>
                 <div className='products-card'>
-                    <h1 className='title'>Add Products</h1>
+                    <h1 className='title'>Product Management</h1>
                     <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                         <TableBody>
