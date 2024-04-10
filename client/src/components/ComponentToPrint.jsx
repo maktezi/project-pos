@@ -46,9 +46,18 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         </div>
     </TableContainer>
     <div className='amount-container'>
-      <p className='total-amount'>Total Amount: ₱ <b>{(totalAmount).toLocaleString()}</b></p>
-      <p className='total-amount'>Tendered Cash: ₱ <b>{(tenderedCash).toLocaleString()}</b> </p>
-      <p className='total-amount'>Change: ₱ <b>{(handleChangeAmount() - totalAmount).toLocaleString()}</b></p>
+      <div className='total-receipt-container' >
+        <div>
+          <p className='total-receipt'>Total Amount:</p>
+          <p className='total-receipt'>Tendered Cash:</p>
+          <p className='total-receipt'>Change:</p>
+        </div>
+        <div>
+          <p className='total-receipt'>₱ <b>{(totalAmount).toLocaleString()}</b></p>
+          <p className='total-receipt'>₱ <b>{(tenderedCash).toLocaleString()}</b> </p>
+          <p className='total-receipt'>₱ <b>{(handleChangeAmount() - totalAmount).toLocaleString()}</b></p>
+        </div>
+      </div>
     </div>
     </div>
   );

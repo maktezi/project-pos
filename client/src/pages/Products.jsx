@@ -1,176 +1,161 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import { useEffect, useState } from "react"
+import MainLayout from '../layout/MainLayout';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
+import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import axiosClient from "../axios-client";
+import TablePagination from '@mui/material/TablePagination';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Card from '@mui/material/Card';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import MainLayout from '../layout/MainLayout';
 
-function TablePaginationActions(props) {
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onPageChange } = props;
-
-    const handleFirstPageButtonClick = (event) => {
-        onPageChange(event, 0);
-    };
-
-    const handleBackButtonClick = (event) => {
-        onPageChange(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event) => {
-        onPageChange(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event) => {
-        onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
-
-    return (
-        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-        <IconButton
-            onClick={handleFirstPageButtonClick}
-            disabled={page === 0}
-            aria-label="first page"
-        >
-            {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-        </IconButton>
-        <IconButton
-            onClick={handleBackButtonClick}
-            disabled={page === 0}
-            aria-label="previous page"
-        >
-            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-        </IconButton>
-        <IconButton
-            onClick={handleNextButtonClick}
-            disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-            aria-label="next page"
-        >
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-        </IconButton>
-        <IconButton
-            onClick={handleLastPageButtonClick}
-            disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-            aria-label="last page"
-        >
-            {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-        </IconButton>
-        </Box>
-    );
-    }
-
-    TablePaginationActions.propTypes = {
-    count: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    page: PropTypes.number.isRequired,
-    rowsPerPage: PropTypes.number.isRequired,
-    };
-
-    function createData(name, calories, fat) {
-    return { name, calories, fat };
-    }
-
-    const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
-    createData('Eclair', 262, 16.0),
-    createData('Frozen yoghurt', 159, 6.0),
-    createData('Gingerbread', 356, 16.0),
-    createData('Honeycomb', 408, 3.2),
-    createData('Ice cream sandwich', 237, 9.0),
-    createData('Jelly Bean', 375, 0.0),
-    createData('KitKat', 518, 26.0),
-    createData('Lollipop', 392, 0.2),
-    createData('Marshmallow', 318, 0),
-    createData('Nougat', 360, 19.0),
-    createData('Oreo', 437, 18.0),
-    ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-    export default function Products() {
+export default function Products() {
+    const [products, setProducts] = useState([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [search, setSearch] = useState('')
+    // const [info, setInfo] = useState({});
 
-    // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
+    const getProducts = () => {
+        axiosClient
+        .get('/products?page=${page}')
+        .then(({data}) => {
+            setProducts(data.data)
+            // setInfo(data.meta)
+            // console.log(data);
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+    };
+    
     const handleChangePage = (event, newPage) => {
+        // console.log("Page change event:", event);
+        // console.log("New page:", newPage);
         setPage(newPage);
+        getProducts(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
     };
+
+    const onDelete = (u) => {
+        if (!window.confirm("Delete this product?")) {
+            return
+        }
+        axiosClient.delete(`/products/${u.id}`)
+            .then(() => {
+                toast.success('Successfuly deleted', {
+                    autoClose: 1000,
+                    theme: "dark",
+                });
+            getProducts()
+        })
+    }
+
+    useEffect(() => {
+        getProducts();
+    }, []);
 
     return (
         <MainLayout>
-            <div className='card'>
-                <div className='products-card'>
-                    <h1 className='title'>Product Management</h1>
+            <Card style={{ 
+                margin: 'auto',
+                width: '1300px',
+                marginTop: '50px'
+            }}>
+                <div>
+                    <div className='add-search' style={{ display: 'flex', justifyContent: 'space-between', paddingLeft: '30px', paddingRight: '30px', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Link to='/add'>
+                                <Button variant="contained" color='success'>
+                                    <AddIcon/>
+                                </Button>
+                            </Link>
+                            <h2 style={{ marginLeft: '20px' }}>Product Management</h2>
+                        </div>
+                        <div className='search-container'>
+                            <input
+                                style={{ padding: '8px 15px', width: '300px', outline: 'none', border: '1px solid gray', borderRadius: '5px' }}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder='Search products . . .'
+                            />
+                        </div>
+                    </div>
+
                     <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                    <Table size='small' sx={{ minWidth: 650 }} aria-label="simple table">
+
+                        <TableHead>
+                        <div className='divider'></div>
+                        <TableRow>
+                            {/* <TableCell><h4>#</h4></TableCell> */}
+                            <TableCell><h4>Product Name</h4></TableCell>
+                            <TableCell><h4>Price</h4></TableCell>
+                            <TableCell style={{ textAlign: 'center' }}><h4>Stocks</h4></TableCell>
+                            <TableCell style={{ textAlign: 'center' }}><h4>Action</h4></TableCell>
+                        </TableRow>
+                        </TableHead>
+
                         <TableBody>
-                        {(rowsPerPage > 0
-                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : rows
-                        ).map((row) => (
-                            <TableRow key={row.name}>
+                        {products
+                        .filter((u) => {
+                            const searchTerm = search.toLowerCase();
+                            if (searchTerm === '') {
+                                return u;
+                            } else {
+                                const productName = `${u.name}`.toLowerCase();
+                                return productName.includes(searchTerm);
+                            }
+                        })
+                        .slice(page*rowsPerPage, page*rowsPerPage+rowsPerPage)
+                        .map(u => (
+                            <TableRow
+                            key={u.id}
+                            >
+                            {/* <TableCell>{u.id}</TableCell> */}
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {u.name}
                             </TableCell>
-                            <TableCell style={{ width: 160 }} align="right">
-                                {row.calories}
-                            </TableCell>
-                            <TableCell style={{ width: 160 }} align="right">
-                                {row.fat}
+                            <TableCell>₱ {u.price}</TableCell>
+                            <TableCell style={{ textAlign: 'center' }}>{u.stocks}</TableCell>
+                            <TableCell style={{ justifyContent: 'center', display: 'flex' }}>
+                                <Link to={'/edit/'+u.id}><IconButton><EditIcon color='primary'/></IconButton></Link>
+                                <IconButton onClick={() => onDelete(u)} color='error'><DeleteIcon/></IconButton>
                             </TableCell>
                             </TableRow>
                         ))}
-                        {emptyRows > 0 && (
-                            <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
                         </TableBody>
-                        <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                            colSpan={3}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            slotProps={{
-                                select: {
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                                },
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                            />
-                        </TableRow>
-                        </TableFooter>
+
                     </Table>
+
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 50, 100]}
+                        showFirstButton
+                        showLastButton
+                        component="div"
+                        count={products.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+
                     </TableContainer>
                 </div>
-            </div>
+            </Card>
         </MainLayout>
-    );
+    )
 }

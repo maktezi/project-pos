@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MainLayout from '../layout/MainLayout';
-import axios from 'axios';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -25,6 +24,7 @@ import { ComponentToPrint } from '../components/ComponentToPrint';
 import { useReactToPrint } from 'react-to-print';
 import FormControl from '@mui/material/FormControl';
 import FilledInput from '@mui/material/FilledInput';
+import axiosClient from "../axios-client";
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 // import QrScanner from 'react-qr-scanner';
@@ -37,39 +37,18 @@ const PosPage = () => {
     const [totalAmount, setTotalAmount] = useState(0);
     const [tenderedCash, setTenderedCash] = useState('');
 
-// Fetch Localhost DBJSON
-// useEffect(() => {
-//     const fetchProducts = async () => {
-//         try {
-//             setIsLoading(true);
-//             const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-//             setProducts(response.data);
-//             setIsLoading(false);
-//         } catch (error) {
-//             console.error('Error fetching products:', error);
-//             setIsLoading(false);
-//         }
-//     };
-
-//     fetchProducts();
-
-//     const intervalId = setInterval(fetchProducts, 3600000);
-
-//     return () => clearInterval(intervalId);
-// }, []);
-
-
-// Fetch Data Online DBJSON
+// Fetch Localhost Data
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.get(import.meta.env.VITE_API_URL, {
-                    headers: {
-                        'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
-                    }
-                });
-                setProducts(response.data.record.products);
+                axiosClient
+                .get('/products?page=${page}')
+                .then(({data}) => {
+                    setProducts(data.data)
+                    // setInfo(data.meta)
+                    // console.log(data);
+                })
                 setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -82,8 +61,34 @@ const PosPage = () => {
         const intervalId = setInterval(fetchProducts, 3600000);
 
         return () => clearInterval(intervalId);
-
     }, []);
+
+
+// Fetch Data Online DBJSON
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             setIsLoading(true);
+    //             const response = await axios.get(import.meta.env.VITE_API_URL, {
+    //                 headers: {
+    //                     'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
+    //                 }
+    //             });
+    //             setProducts(response.data.record.products);
+    //             setIsLoading(false);
+    //         } catch (error) {
+    //             console.error('Error fetching products:', error);
+    //             setIsLoading(false);
+    //         }
+    //     };
+
+    //     fetchProducts();
+
+    //     const intervalId = setInterval(fetchProducts, 3600000);
+
+    //     return () => clearInterval(intervalId);
+
+    // }, []);
 
 
     const addProductToCart = async (product) => {
@@ -246,6 +251,8 @@ const PosPage = () => {
     const handleTenderedCash = (event) => {
         setTenderedCash(event.target.value);
     };
+
+    const isCashTenderedEmpty = tenderedCash.trim() === '' || parseFloat(tenderedCash) < totalAmount;
     
     // const handleError = err => {
     //     console.error(err);
@@ -263,16 +270,18 @@ const PosPage = () => {
                                 .sort((a, b) => a.name.localeCompare(b.name))
                                 .map((product) => (
                                     <ImageListItem className='block' key={product.id}>
+                                        <div style={{ width: '185px', border: '3px solid maroon' }}>
                                         <img
                                             src={`${product.image}?w=248&fit=crop&auto=format`}
                                             alt={product.name}
                                             loading="lazy"
-                                            style={{ width: '175px', height: '175px', objectFit: 'cover'}}
+                                            style={{ width: '179px', height: '130px', objectFit: 'cover'}}
                                         />
                                         <ImageListItemBar
                                             title={product.name}
                                             subtitle={`₱ ${(product.price).toLocaleString()}`}
                                             position="below"
+                                            style={{ marginTop: '-10px', marginLeft: '5px' }}
                                             actionIcon={
                                                 <IconButton
                                                     sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -288,6 +297,7 @@ const PosPage = () => {
                                             subtitle={`Stock: ${product.stocks}`}
                                             position="below"
                                         />
+                                        </div>
                                     </ImageListItem>
                                 ))
                         )}
@@ -406,14 +416,14 @@ const PosPage = () => {
                                     </div>
                                     <div>
                                     <h3 className='title-change'>Change:
-                                    {tenderedCash > totalAmount && (
+                                    {tenderedCash >= totalAmount && (
                                         <> ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</>
                                     )}
                                     </h3>
                                     </div>
                                 </div>
                                 <div className='pay-now'>
-                                    <Button onClick={handlePrint} variant='contained' id='pay-button'>Pay Now</Button>
+                                    <Button onClick={handlePrint} disabled={isCashTenderedEmpty} variant='contained' id='pay-button'>Pay Now</Button>
                                 </div>
                             </>
                         )}
