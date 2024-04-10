@@ -139,6 +139,111 @@
             "price": 85.71,
             "image": "https://www.shutterstock.com/image-photo/corn-flakes-milk-splash-white-600nw-2149257935.jpg",
             "stocks": 100
+        },
+        {
+            "id": 21,
+            "name": "Apple",
+            "price": 15.99,
+            "image": "https://www.shutterstock.com/image-photo/red-apple-isolated-on-white-600nw-1727544364.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 22,
+            "name": "Banana",
+            "price": 10.25,
+            "image": "https://www.shutterstock.com/image-photo/banana-cluster-isolated-600nw-575528746.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 23,
+            "name": "Orange",
+            "price": 12.75,
+            "image": "https://t3.ftcdn.net/jpg/00/56/01/00/360_F_56010077_UA98ADMw95rEB2hCuAlFOJkjdirrAAPV.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 24,
+            "name": "Grapes",
+            "price": 18.50,
+            "image": "https://img.freepik.com/free-psd/zinfandel-grape-fruit-isolated-transparent-background_191095-15649.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 25,
+            "name": "Watermelon",
+            "price": 22.90,
+            "image": "https://snaped.fns.usda.gov/sites/default/files/styles/crop_ratio_7_5/public/seasonal-produce/2018-05/watermelon.jpg?itok=WlQcb2Uh",
+            "stocks": 100
+        },
+        {
+            "id": 26,
+            "name": "Strawberry",
+            "price": 30.15,
+            "image": "https://www.allrecipes.com/thmb/1c99SWam7_FM6vUzpDDzIKffMR4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ALR-strawberry-fruit-or-vegetable-f6dd901427714e46af2d706a57b9016f.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 27,
+            "name": "Pineapple",
+            "price": 26.80,
+            "image": "https://www.bultuhan.com/images/detailed/11/pineapple2_m0qp-9j.",
+            "stocks": 100
+        },
+        {
+            "id": 28,
+            "name": "Mango",
+            "price": 20.60,
+            "image": "https://shopmetro.ph/angeles-supermarket/wp-content/uploads/2021/11/SM13560-2.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 29,
+            "name": "Lemon",
+            "price": 9.85,
+            "image": "https://cdn11.bigcommerce.com/s-9in0l/images/stencil/2048x2048/products/131/616/LEMON_-_CITRUS_LIMON__33129.1682577315.png?c=2",
+            "stocks": 100
+        },
+        {
+            "id": 30,
+            "name": "Avocado",
+            "price": 17.25,
+            "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/02/Avocados-3d84a3a.jpg?resize=768,574",
+            "stocks": 100
+        },
+        {
+            "id": 31,
+            "name": "Pear",
+            "price": 14.60,
+            "image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/27/0/HEW_Pears_s4x3.jpg.rend.hgtvcom.1280.1280.suffix/1371612039080.jpeg",
+            "stocks": 100
+        },
+        {
+            "id": 32,
+            "name": "Peach",
+            "price": 16.40,
+            "image": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/11/27/0/HEW_Pears_s4x3.jpg.rend.hgtvcom.1280.1280.suffix/1371612039080.jpeg",
+            "stocks": 100
+        },
+        {
+            "id": 33,
+            "name": "Kiwi",
+            "price": 11.75,
+            "image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/02/Kiwi-fruits-582a07b.jpg?quality=90&resize=556,505",
+            "stocks": 100
+        },
+        {
+            "id": 34,
+            "name": "Cherry",
+            "price": 28.90,
+            "image": "https://static01.nyt.com/newsgraphics/2014/06/16/bittman-eat-cherry/ed5c4f4c098cd142650d7c00014e71abf85d2f86/eatopener_cherry.jpg",
+            "stocks": 100
+        },
+        {
+            "id": 35,
+            "name": "Plum",
+            "price": 19.75,
+            "image": "https://img.imageboss.me/fourwinds/width/425/dpr:2/shop/files/burgundy-plum-fruit-tree-1.jpg?v=1697048986",
+            "stocks": 100
         }
     ]
 }

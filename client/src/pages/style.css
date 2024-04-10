@@ -34,6 +34,10 @@
     margin: 20px;
 }
 
+.product-box {
+    border: 1px solid maroon;
+}
+
 .cart-card {
     display: block;
     /* margin: auto; */
@@ -66,10 +70,8 @@
 
 .misc-box {
     display: flex;
-    margin: auto;
     justify-content: space-between;
     padding-right: 30px;
-    padding-top: 10px;
 }
 
 .qr-scanner {
