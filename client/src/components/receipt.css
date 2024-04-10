@@ -20,10 +20,15 @@
     margin-top: 0px;
 }
 
-.total-amount {
+.total-receipt {
     font-size: 15px;
-    margin-left: 300px;
-    text-align: end;
+    margin-left: 50px;
+    text-align: left;
     margin-bottom: -13px;
-    padding-right: 100px;
+    /* padding-right: 100px; */
+}
+
+.total-receipt-container {
+    display: flex;
+    margin-left: 270px;
 }

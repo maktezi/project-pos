@@ -7,12 +7,21 @@ import {
 import './main.css'
 import Products from './pages/Products';
 import PosPage from './pages/PosPage';
+import Form from './components/Form';
 
 const router = createBrowserRouter([
   { path: "/",
     element: <PosPage /> },
   { path: "/products",
     element: <Products /> },
+    {
+      path: '/add',
+      element: <Form key="userCreate"/>
+  },
+  {
+      path: '/edit/:id',
+      element: <Form key="userEdit"/>
+  },
   { path: "*",
     element: <PosPage /> },
 ]);
