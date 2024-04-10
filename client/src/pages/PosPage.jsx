@@ -35,24 +35,28 @@ const PosPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [cart, setCart] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
-    const [tenderedCash, setTenderedCash] = useState(0);
+    const [tenderedCash, setTenderedCash] = useState('');
 
 // Fetch Localhost DBJSON
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         try {
-    //             setIsLoading(true);
-    //             const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
-    //             setProducts(response.data);
-    //             setIsLoading(false);
-    //         } catch (error) {
-    //             console.error('Error fetching products:', error);
-    //             setIsLoading(false);
-    //         }
-    //     };
+// useEffect(() => {
+//     const fetchProducts = async () => {
+//         try {
+//             setIsLoading(true);
+//             const response = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
+//             setProducts(response.data);
+//             setIsLoading(false);
+//         } catch (error) {
+//             console.error('Error fetching products:', error);
+//             setIsLoading(false);
+//         }
+//     };
 
-    //     fetchProducts();
-    // }, []);
+//     fetchProducts();
+
+//     const intervalId = setInterval(fetchProducts, 3600000);
+
+//     return () => clearInterval(intervalId);
+// }, []);
 
 
 // Fetch Data Online DBJSON
@@ -74,6 +78,11 @@ const PosPage = () => {
         };
 
         fetchProducts();
+
+        const intervalId = setInterval(fetchProducts, 3600000);
+
+        return () => clearInterval(intervalId);
+
     }, []);
 
 
@@ -246,8 +255,8 @@ const PosPage = () => {
         <MainLayout>
             <div className='card'>
                 <div className='products-card'>
-                    <h1 className='title'>Products</h1>
-                    <ImageList className='row' sx={{ width: 1200, height: 800 }} cols={5}>
+                    <div className='product-box'>
+                    <ImageList className='row' sx={{ width: 1200, height: 840 }} cols={6}>
                         {isLoading ? 'Loading...' : (
                             products
                                 .slice()
@@ -258,6 +267,7 @@ const PosPage = () => {
                                             src={`${product.image}?w=248&fit=crop&auto=format`}
                                             alt={product.name}
                                             loading="lazy"
+                                            style={{ width: '175px', height: '175px', objectFit: 'cover'}}
                                         />
                                         <ImageListItemBar
                                             title={product.name}
@@ -269,7 +279,7 @@ const PosPage = () => {
                                                     aria-label="add"
                                                     onClick={() => addProductToCart(product)}
                                                 >
-                                                    <ShoppingCartIcon style={{ zIndex: 5 }} color='success'/>
+                                                    <ShoppingCartIcon style={{ zIndex: 5 }} color='primary'/>
                                                 </IconButton>
                                             }
                                         />
@@ -282,6 +292,7 @@ const PosPage = () => {
                                 ))
                         )}
                     </ImageList>
+                    </div>
                 </div>
 
                 <div className='cart-card'>
@@ -305,12 +316,10 @@ const PosPage = () => {
                             <Table sx={{ minWidth: 650, height: 480 }} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell ><h4>Action</h4></TableCell>
-                                        {/* <TableCell><h4>#</h4></TableCell> */}
                                         <TableCell><h4>Item</h4></TableCell>
                                         <TableCell><h4>Price</h4></TableCell>
-                                        <TableCell style={{ textAlign: 'center' }}><h4>Qty/Kg</h4></TableCell>
-                                        <TableCell style={{ textAlign: 'center' }}><h4>Total</h4></TableCell>
+                                        <TableCell><h4>Qty/Kg</h4></TableCell>
+                                        <TableCell><h4>Total</h4></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -323,11 +332,9 @@ const PosPage = () => {
                                                     <IconButton style={{ padding: "1px 1px" }} onClick={() => removeProductFromCart(cartProduct)}>
                                                         <DeleteIcon color='error' />
                                                     </IconButton>
-                                                </TableCell>
-                                                {/* <TableCell component="th" scope="row">{cartProduct.id}</TableCell> */}
-                                                <TableCell><b>{cartProduct.name}</b></TableCell>
-                                                <TableCell>₱ {cartProduct.price}</TableCell>
-                                                <TableCell style={{ textAlign: 'center' }}>
+                                                    <b>{cartProduct.name}</b></TableCell>
+                                                <TableCell style={{ textAlign: 'left' }}>₱ {cartProduct.price}</TableCell>
+                                                <TableCell style={{ textAlign: 'left' }}>
                                                     <IconButton style={{ padding: "1px 1px" }} onClick={() => addOneProductToCart(cartProduct)}>
                                                         <AddIcon color='primary' />
                                                     </IconButton>
@@ -339,7 +346,7 @@ const PosPage = () => {
                                                     )}
                                                 </TableCell>
 
-                                                <TableCell style={{ textAlign: 'center' }}>₱ <b>{(cartProduct.totalAmount).toLocaleString()}</b></TableCell>
+                                                <TableCell style={{ textAlign: 'left' }}>₱ <b>{(cartProduct.totalAmount).toLocaleString()}</b></TableCell>
                                             </TableRow>
                                         )) : 
                                         <TableRow>
@@ -388,8 +395,9 @@ const PosPage = () => {
                                         <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                             <InputLabel htmlFor="cash-tendered">Cash Tendered</InputLabel>
                                             <FilledInput
-                                                style={{ fontWeight: 800, fontSize: '20px', width: '200px' }}
+                                                style={{ fontWeight: 800, fontSize: '18px', width: '200px' }}
                                                 id="cash-tendered"
+                                                autoComplete='off'
                                                 value={tenderedCash}
                                                 onChange={handleTenderedCash}
                                                 startAdornment={<InputAdornment position="start">₱</InputAdornment>}
@@ -397,9 +405,11 @@ const PosPage = () => {
                                         </FormControl>
                                     </div>
                                     <div>
-                                        {tenderedCash > 0 && (
-                                            <h2 className='title-change'>CHANGE: ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</h2>
-                                        )}
+                                    <h3 className='title-change'>Change:
+                                    {tenderedCash > totalAmount && (
+                                        <> ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</>
+                                    )}
+                                    </h3>
                                     </div>
                                 </div>
                                 <div className='pay-now'>

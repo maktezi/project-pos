@@ -7,14 +7,13 @@ import {
 import './main.css'
 import Products from './pages/Products';
 import PosPage from './pages/PosPage';
-import MainLayout from './layout/MainLayout';
 
 const router = createBrowserRouter([
   { path: "/",
-    element: <MainLayout /> },
+    element: <PosPage /> },
   { path: "/products",
     element: <Products /> },
-  { path: "/pos",
+  { path: "*",
     element: <PosPage /> },
 ]);
 

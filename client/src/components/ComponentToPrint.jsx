@@ -15,16 +15,16 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     <div ref={ref}>
       <TableContainer id='container'>
       <div>
-        <h3 className='title'>POS System</h3>
+        <h3 className='title'>Store Receipt</h3>
       </div>
         <div className='table-container'>
-        <Table sx={{ minWidth: 650, maxHeight: 800 }} size="small" aria-label="a dense table">
+        <Table sx={{ width: 600 }} size="small" aria-label="a dense table">
             <TableHead>
                 <TableRow>
                     <TableCell><h5>Item</h5></TableCell>
                     <TableCell><h5>Price</h5></TableCell>
                     <TableCell style={{ textAlign: 'center' }}><h5>Qty/Kg</h5></TableCell>
-                    <TableCell style={{ textAlign: 'center' }}><h5>Total</h5></TableCell>
+                    <TableCell><h5>Total</h5></TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -34,7 +34,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
                             <TableCell>{cartProduct.name}</TableCell>
                             <TableCell>₱ {cartProduct.price}</TableCell>
                             <TableCell style={{ textAlign: 'center' }}>{cartProduct.quantity}</TableCell>
-                            <TableCell style={{ textAlign: 'center' }}>₱ {(cartProduct.totalAmount).toLocaleString()}</TableCell>
+                            <TableCell>₱ {(cartProduct.totalAmount).toLocaleString()}</TableCell>
                         </TableRow>
                     )) : 
                     <TableRow>
@@ -46,9 +46,9 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         </div>
     </TableContainer>
     <div className='amount-container'>
-      <p className='total-amount'>Total Amount: ₱ {(totalAmount).toLocaleString()} </p>
-      <p className='total-amount'>Tendered Cash: ₱ {(tenderedCash).toLocaleString()} </p>
-      <p className='total-amount'>Change: ₱ {(handleChangeAmount() - totalAmount).toLocaleString()} </p>
+      <p className='total-amount'>Total Amount: ₱ <b>{(totalAmount).toLocaleString()}</b></p>
+      <p className='total-amount'>Tendered Cash: ₱ <b>{(tenderedCash).toLocaleString()}</b> </p>
+      <p className='total-amount'>Change: ₱ <b>{(handleChangeAmount() - totalAmount).toLocaleString()}</b></p>
     </div>
     </div>
   );

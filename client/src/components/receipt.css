@@ -1,7 +1,10 @@
 #container {
-    margin: 30px auto;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 25px;
+    padding-right: 25px;
+    width: 600px;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 30px;
 }
 
 .title {
@@ -10,17 +13,17 @@
 
 .table-container {
     display: flex;
-    margin: 30px auto;
-    border: 1px solid black
+    width: 100%;
 }
 
 .amount-container {
-    margin-top: -50px;
+    margin-top: 0px;
 }
 
 .total-amount {
-    margin-left: 570px;
+    font-size: 15px;
+    margin-left: 300px;
     text-align: end;
-    margin-bottom: -20px;
-    padding-right: 90px;
+    margin-bottom: -13px;
+    padding-right: 100px;
 }
