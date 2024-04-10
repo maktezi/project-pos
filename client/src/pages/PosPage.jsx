@@ -37,7 +37,6 @@ const PosPage = () => {
     const [totalAmount, setTotalAmount] = useState(0);
     const [tenderedCash, setTenderedCash] = useState('');
 
-// Fetch Localhost Data
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -59,37 +58,8 @@ const PosPage = () => {
         fetchProducts();
 
         const intervalId = setInterval(fetchProducts, 3600000);
-
         return () => clearInterval(intervalId);
     }, []);
-
-
-// Fetch Data Online DBJSON
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         try {
-    //             setIsLoading(true);
-    //             const response = await axios.get(import.meta.env.VITE_API_URL, {
-    //                 headers: {
-    //                     'X-Master-Key': '$2a$10$OUObxgOj8M5HxMIyqVebluB07/l5KZsb5Jw23FGeLOGu8/.PY9qte'
-    //                 }
-    //             });
-    //             setProducts(response.data.record.products);
-    //             setIsLoading(false);
-    //         } catch (error) {
-    //             console.error('Error fetching products:', error);
-    //             setIsLoading(false);
-    //         }
-    //     };
-
-    //     fetchProducts();
-
-    //     const intervalId = setInterval(fetchProducts, 3600000);
-
-    //     return () => clearInterval(intervalId);
-
-    // }, []);
-
 
     const addProductToCart = async (product) => {
         const timestamp = Date.now();
