@@ -1,0 +1,23 @@
+#mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 1000px) {
+    #desktop {
+        display: none;
+    }
+
+    #mobile {
+        display: block;
+        justify-content: center;
+        margin: auto;
+        text-align: center;
+    }
+
+    .image-notif {
+        margin-top: 100px;
+        width: 500px;
+        max-width: 800px;
+        margin-bottom: -50px;
+    }
+}
