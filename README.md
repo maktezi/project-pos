@@ -1,5 +1,7 @@
 # Getting stated
+### Clone this repository and install the dependencies.
 
+# ReactJS Vite Setup
 ### Initialize the project locally
 ```
 `npm install`
@@ -11,31 +13,40 @@
 ```
 
 ### Read the documentation
-
 Read [the documentation of vite-plugin-react-pages](https://vitejs.github.io/vite-plugin-react-pages/).
 
 
-# json Server
-### Installation
-* NodeJS: https://nodejs.org/en/
-* IDE/Code Editor: VS Code: https://code.visualstudio.com/
-
+# Laravel Setup
+### Install Composer
 ```
-npm install -g json-server
-```
-
-### Start JSON Server
-
-```
-* > cd db.json dir
+* > cd backend
 ```
 
 ```
-json-server --watch db.json --port 5000
+$ composer install
 ```
 
-### Now if you go to 
+### Install node and npm
+```
+npm install
+```
 
+### Migrate the database
 ```
-* http://localhost:5000/
+php artisan migrate
 ```
+
+### Start Laravel Server
+```
+php artisan serve
+```
+
+### Now go to local server 
+```
+* http://localhost:8000/
+```
+
+Open [http://localhost:8000](http://localhost:8000) from your browser. 
+To access the admin panel, hit the link 
+[http://localhost:8000/admin](http://localhost:8000/admin) from your browser.
+The application comes with default user with email address `admin@mail.com` and `admin1234`.
