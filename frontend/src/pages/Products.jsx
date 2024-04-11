@@ -51,11 +51,11 @@ export default function Products() {
     setPage(0);
     };
 
-    const onDelete = (u) => {
+    const onDelete = (product) => {
         if (!window.confirm("Delete this product?")) {
             return
         }
-        axiosClient.delete(`/products/${u.id}`)
+        axiosClient.delete(`/products/${product.id}`)
             .then(() => {
                 toast.success('Successfuly deleted', {
                     autoClose: 1000,
@@ -90,7 +90,7 @@ export default function Products() {
                             <input
                                 style={{ padding: '8px 15px', width: '300px', outline: 'none', border: '1px solid gray', borderRadius: '5px' }}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder='Search products . . .'
+                                placeholder='Search product name . . .'
                             />
                         </div>
                     </div>
@@ -101,7 +101,7 @@ export default function Products() {
                         <TableHead>
                         <div className='divider'></div>
                         <TableRow>
-                            {/* <TableCell><h4>#</h4></TableCell> */}
+                            <TableCell><h4>#</h4></TableCell>
                             <TableCell><h4>Product Name</h4></TableCell>
                             <TableCell><h4>Price</h4></TableCell>
                             <TableCell style={{ textAlign: 'center' }}><h4>Stocks</h4></TableCell>
@@ -111,29 +111,29 @@ export default function Products() {
 
                         <TableBody>
                         {products
-                        .filter((u) => {
+                        .filter((product) => {
                             const searchTerm = search.toLowerCase();
                             if (searchTerm === '') {
-                                return u;
+                                return product;
                             } else {
-                                const productName = `${u.name}`.toLowerCase();
+                                const productName = `${product.name}`.toLowerCase();
                                 return productName.includes(searchTerm);
                             }
                         })
                         .slice(page*rowsPerPage, page*rowsPerPage+rowsPerPage)
-                        .map(u => (
+                        .map(product => (
                             <TableRow
-                            key={u.id}
+                            key={product.id}
                             >
-                            {/* <TableCell>{u.id}</TableCell> */}
+                            <TableCell component="th" scope="row">{product.id}</TableCell>
                             <TableCell component="th" scope="row">
-                                {u.name}
+                                {product.name}
                             </TableCell>
-                            <TableCell>₱ {u.price}</TableCell>
-                            <TableCell style={{ textAlign: 'center' }}>{u.stocks}</TableCell>
+                            <TableCell>₱ {parseFloat(product.price).toLocaleString()}</TableCell>
+                            <TableCell style={{ textAlign: 'center' }}>{product.stocks}</TableCell>
                             <TableCell style={{ justifyContent: 'center', display: 'flex' }}>
-                                <Link to={'/edit/'+u.id}><IconButton><EditIcon color='primary'/></IconButton></Link>
-                                <IconButton onClick={() => onDelete(u)} color='error'><DeleteIcon/></IconButton>
+                                <Link to={'/edit/'+product.id}><IconButton><EditIcon color='primary'/></IconButton></Link>
+                                <IconButton onClick={() => onDelete(product)} color='error'><DeleteIcon/></IconButton>
                             </TableCell>
                             </TableRow>
                         ))}

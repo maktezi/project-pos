@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import './receipt.css'
 
 export const ComponentToPrint = React.forwardRef((props, ref) => {
@@ -15,26 +16,27 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
     <div ref={ref}>
       <TableContainer id='container'>
       <div>
-        <h3 className='title'>Store Receipt</h3>
+        <InsertEmoticonIcon />LOGO Here
+        <h3 className='receipt-title'>Store Receipt</h3>
       </div>
         <div className='table-container'>
         <Table sx={{ width: 600 }} size="small" aria-label="a dense table">
             <TableHead>
                 <TableRow>
-                    <TableCell><h5>Item</h5></TableCell>
-                    <TableCell><h5>Price</h5></TableCell>
-                    <TableCell style={{ textAlign: 'center' }}><h5>Qty/Kg</h5></TableCell>
-                    <TableCell><h5>Total</h5></TableCell>
+                    <TableCell style={{ width: '150px', fontSize: '11px' }}><b>Item</b></TableCell>
+                    <TableCell style={{ width: '100px', fontSize: '11px' }}><b>Price</b></TableCell>
+                    <TableCell style={{ textAlign: 'center', width: '50px', fontSize: '11px' }}><b>Qty/Kg</b></TableCell>
+                    <TableCell style={{ width: '100px', fontSize: '11px' }}><b>Total</b></TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {cart.length > 0 ? cart
                     .map((cartProduct, key) => (
                         <TableRow key={key={key}}>
-                            <TableCell>{cartProduct.name}</TableCell>
-                            <TableCell>₱ {cartProduct.price}</TableCell>
-                            <TableCell style={{ textAlign: 'center' }}>{cartProduct.quantity}</TableCell>
-                            <TableCell>₱ {(cartProduct.totalAmount).toLocaleString()}</TableCell>
+                            <TableCell style={{ width: '80px', fontSize: '10px' }}>{cartProduct.name}</TableCell>
+                            <TableCell style={{ width: '80px', fontSize: '10px' }}>₱ {parseFloat((cartProduct.price)).toLocaleString()}</TableCell>
+                            <TableCell style={{ textAlign: 'center', width: '80px', fontSize: '10px' }}>{cartProduct.quantity}</TableCell>
+                            <TableCell style={{ width: '80px', fontSize: '10px' }}>₱ {parseFloat((cartProduct.totalAmount)).toLocaleString()}</TableCell>
                         </TableRow>
                     )) : 
                     <TableRow>
@@ -54,7 +56,7 @@ export const ComponentToPrint = React.forwardRef((props, ref) => {
         </div>
         <div>
           <p className='total-receipt'>₱ <b>{(totalAmount).toLocaleString()}</b></p>
-          <p className='total-receipt'>₱ <b>{(tenderedCash).toLocaleString()}</b> </p>
+          <p className='total-receipt'>₱ <b>{parseFloat((tenderedCash)).toLocaleString()}</b> </p>
           <p className='total-receipt'>₱ <b>{(handleChangeAmount() - totalAmount).toLocaleString()}</b></p>
         </div>
       </div>

@@ -1,34 +1,45 @@
 #container {
     padding-left: 25px;
     padding-right: 25px;
-    width: 600px;
+    width: 50vh;
     overflow: hidden;
     margin: auto;
     margin-top: 30px;
 }
 
-.title {
+.receipt-title {
     text-align: center;
 }
 
 .table-container {
+    z-index: 1;
     display: flex;
+    margin: auto;
     width: 100%;
+    border-top: 3px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
 }
 
 .amount-container {
+    z-index: 0;
+    margin: auto;
     margin-top: 0px;
+    padding-bottom: 10px;
+    width: 44.3vh;
+    border: 1px solid black;
 }
 
 .total-receipt {
-    font-size: 15px;
-    margin-left: 50px;
+    font-size: 10px;
     text-align: left;
-    margin-bottom: -13px;
+    margin-bottom: -10px;
     /* padding-right: 100px; */
 }
 
 .total-receipt-container {
     display: flex;
-    margin-left: 270px;
+    margin-left: 15vh;
+    margin-top: -10px;
+    justify-content: space-around;
 }

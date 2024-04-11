@@ -26,9 +26,9 @@ const MainLayout = ({ children }) => {
         </div>
         <div id='mobile'>
             <img className='image-notif' src={mobileerror}/>
-            <h1>
-            Sorry, there is no mobile UI <br/>available at the moment.<br/>Only for desktop and laptop.
-            </h1>
+            <h2>
+            There is no mobile UI <br/>available at the moment.
+            </h2>
         </div>
     </>
     )
