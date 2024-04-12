@@ -248,21 +248,21 @@ const PosPage = () => {
         if (isScanning) {
             const scanner = new Html5QrcodeScanner('reader', {
                 qrbox: {
-                    width: 200,
-                    height: 200,
+                    width: 150,
+                    height: 100,
                 },
                 fps: 5,
             });
     
             const success = async (result) => {
-                console.log("QR code scanned:", result);
+                // console.log("QR code scanned:", result);
                 scanner.clear();
                 setScanResult(result);
                 setIsScanning(false);
             };
     
-            const error = (err) => {
-                console.log(err);
+            const error = () => {
+                // console.log(err);
             };
     
             scanner.render(success, error);
@@ -279,7 +279,7 @@ const PosPage = () => {
             setScanResult(null); // Reset scan result after processing
             setTimeout(() => {
                 setIsScanning(true); // Resume scanning
-            }, 1000);
+            }, 500);
         }
     }, [scanResult, isScanning, handleAddProductToCart]);
     
@@ -352,7 +352,7 @@ const PosPage = () => {
 
                     <div className='cart-box'>
                         <div className='cartReceipt'>
-                            <h1 className='title'>Cart</h1>
+                            {/* <h1 className='title'>Cart</h1> */}
                             <div style={{ display: 'none' }}>
                                 <ComponentToPrint cart={cart} totalAmount={totalAmount} tenderedCash={tenderedCash} handleChangeAmount={handleChangeAmount} ref={componentRef} />
                             </div>
@@ -440,16 +440,7 @@ const PosPage = () => {
 
                     <div className='misc-box'>
                         <div className='qr-scanner'>
-                            <div id='reader'>
-                                {/* {scanResult && (
-                                    <>Success: <a href={'http://' + scanResult}>{scanResult}</a></>
-                                )} */}
-                                {scanResult ? (
-                                    <div id='reader'>Success: <a href={'http://' + scanResult}>{scanResult}</a></div>
-                                ) : (
-                                    <div id="reader"></div>
-                                )}
-                            </div>
+                            <div id='reader'></div>
                         </div>
 
                         <div className='option-box'>

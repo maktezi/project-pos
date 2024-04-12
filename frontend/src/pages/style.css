@@ -82,7 +82,7 @@
     margin-top: -10px;
     display: flex;
     justify-content: space-between;
-    padding-right: 20px;
+    /* padding-right: 20px; */
 }
 
 .option-box {
@@ -95,14 +95,44 @@
 }
 
 .qr-scanner img {
-    width: 170px;
+    width: 150px;
+    height: 50px;
     color: white;
+}
+
+#html5-qrcode-button-camera-permission {
+    display: block;
+    height: 30px;
+    margin: 0 auto;
+    font-size: 11px;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+    font-size: 12px;
+}
+
+#reader__dashboard_section_csr {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    margin-top: -28px;
+}
+
+#html5-qrcode-select-camera {
+    display: flex;
+    margin: 0 auto;
+    /* margin-top: -10px; */
+    font-size: 8px;
+}
+
+#html5-qrcode-button-camera-start, #html5-qrcode-button-camera-stop {
+    font-size: 10px;
 }
 
 #pay-button {
     padding: 48px 45px;
     margin-top: 27.5px;
-    margin-left: 30px;
+    margin-left: 5px;
     font-size: 15px;
     font-weight: 900;
 }
