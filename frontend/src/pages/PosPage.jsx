@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MainLayout from '../layout/MainLayout';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -27,8 +26,13 @@ import FilledInput from '@mui/material/FilledInput';
 import axiosClient from "../axios-client";
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-// import QrScanner from 'react-qr-scanner';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
+import ProductionQuantityLimitsRoundedIcon from '@mui/icons-material/ProductionQuantityLimitsRounded';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 import './style.css'
+
+
 
 const PosPage = () => {
     const [products, setProducts] = useState([]);
@@ -36,6 +40,9 @@ const PosPage = () => {
     const [cart, setCart] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
     const [tenderedCash, setTenderedCash] = useState('');
+    const [search, setSearch] = useState('')
+    const [scanResult, setScanResult] = useState(null);
+    const [isScanning, setIsScanning] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -61,7 +68,7 @@ const PosPage = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    const addProductToCart = async (product) => {
+    const addProductToCart = useCallback(async (product) => {
         const timestamp = Date.now();
         const productWithTimestamp = {
             ...product,
@@ -80,7 +87,7 @@ const PosPage = () => {
                 if (cartItem.id === product.id) {
                     newItem = {
                         ...cartItem,
-                        quantity: cartItem.quantity + 1,
+                        quantity: (cartItem.quantity + 1),
                         totalAmount: parseFloat((cartItem.price * (cartItem.quantity + 1)).toFixed(2))
                     }
                     newCart.push(newItem);
@@ -91,7 +98,7 @@ const PosPage = () => {
     
             setCart(newCart);
             toast.info(`${newItem.name} quantity added`, {
-                autoClose: 1000,
+                autoClose: 500,
                 theme: "dark",
             });
     
@@ -101,47 +108,14 @@ const PosPage = () => {
                 'quantity': 1,
                 'totalAmount': product.price,
             }
+            
             setCart([...cart, addingProduct]);
             toast.success(`${product.name} added to cart`, {
-                autoClose: 1000,
+                autoClose: 500,
                 theme: "dark",
             });
         }
-    }
-
-    const addOneProductToCart = async(product) => {
-        let findProductInCart = cart.find(item => item.id === product.id);
-    
-        if (findProductInCart) {
-            const newCart = cart.map(cartItem => {
-                if (cartItem.id === product.id) {
-                    return {
-                        ...cartItem,
-                        quantity: cartItem.quantity + 1,
-                        totalAmount: parseFloat(((cartItem.quantity + 1) * cartItem.price).toFixed(2))
-                    };
-                }
-                return cartItem;
-            });
-    
-            setCart(newCart);
-            toast.info(`${product.name} quantity added`, {
-                autoClose: 1000,
-                theme: "dark",
-            });
-        } else {
-            const addingProduct = {
-                ...product,
-                quantity: 1,
-                totalAmount: parseFloat(product.price).toFixed(2)
-            };
-            setCart([...cart, addingProduct]);
-            toast.success(`${product.name} added to cart`, {
-                autoClose: 1000,
-                theme: "dark",
-            });
-        }
-    }
+    })
     
     const removeOneProductFromCart = (product) => {
         const newCart = cart.map(cartItem => {
@@ -157,7 +131,7 @@ const PosPage = () => {
     
         setCart(newCart);
         toast.warning(`${product.name} quantity lessened`, {
-            autoClose: 1000,
+            autoClose: 500,
             theme: "dark",
         });
     }
@@ -166,7 +140,7 @@ const PosPage = () => {
         const newCart = cart.filter(cartItem => cartItem.id !== product.id);
         setCart(newCart);
         toast.error(`${product.name} removed from cart`, {
-            autoClose: 1000,
+            autoClose: 500,
             theme: "dark",
         });
     }
@@ -174,7 +148,7 @@ const PosPage = () => {
     const clearCart = () => {
         setCart([]);
         toast.error(`All items removed from cart.`, {
-            autoClose: 1000,
+            autoClose: 500,
             theme: "dark",
         });
     };
@@ -198,10 +172,6 @@ const PosPage = () => {
         handleReactToPrint();
     };
 
-    // useEffect(() => {
-    //     console.log(products);
-    // }, [products]);
-
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -224,32 +194,135 @@ const PosPage = () => {
 
     const isCashTenderedEmpty = tenderedCash.trim() === '' || parseFloat(tenderedCash) < totalAmount;
     
-    // const handleError = err => {
-    //     console.error(err);
-    // };
+    const handleAddProductToCart = useCallback(async (result) => {
+        if (!result) {
+            console.log("No QR code scanned");
+            return;
+        }
+    
+        // Example: Parsing the product ID from the QR code result
+        const productId = parseInt(result);
+        
+        // Find the product in the cart
+        const existingProductIndex = cart.findIndex(item => item.id === productId);
+    
+        if (existingProductIndex !== -1) {
+            // If the product is already in the cart, increase its quantity by 1
+            const updatedCart = [...cart];
+            updatedCart[existingProductIndex].quantity += 1;
+            updatedCart[existingProductIndex].totalAmount = parseFloat((updatedCart[existingProductIndex].price * (updatedCart[existingProductIndex].quantity)).toFixed(2));
+            setCart(updatedCart);
+            toast.info(`Quantity of product updated`, {
+                autoClose: 500,
+                theme: "dark",
+            });
+        } else {
+            // If the product is not in the cart, add it with quantity 1
+            const productToAdd = products.find(product => product.id === productId);
+            
+            if (!productToAdd) {
+                console.log("Product not found for ID:", productId);
+                return;
+            }
+    
+            // Add the product to the cart with quantity 1
+            const timestamp = Date.now();
+            const productWithTimestamp = {
+                ...productToAdd,
+                timestamp,
+                quantity: 1,
+                totalAmount: parseFloat((productToAdd.price * 1).toFixed(2)) // Total amount for new product
+            };
+            
+            setCart(prevCart => [...prevCart, productWithTimestamp]);
+            toast.success(`${productToAdd.name} added to cart`, {
+                autoClose: 500,
+                theme: "dark",
+            });
+        }
+    
+        console.log("Product added to cart:", productId);
+    }, [products, cart, setCart]);    
+    
+    useEffect(() => {
+        if (isScanning) {
+            const scanner = new Html5QrcodeScanner('reader', {
+                qrbox: {
+                    width: 150,
+                    height: 100,
+                },
+                fps: 5,
+            });
+    
+            const success = async (result) => {
+                // console.log("QR code scanned:", result);
+                scanner.clear();
+                setScanResult(result);
+                setIsScanning(false);
+            };
+    
+            const error = () => {
+                // console.log(err);
+            };
+    
+            scanner.render(success, error);
+    
+            return () => {
+                scanner.clear();
+            };
+        }
+    }, [isScanning]);
+
+    useEffect(() => {
+        if (!isScanning && scanResult) {
+            handleAddProductToCart(scanResult);
+            setScanResult(null); // Reset scan result after processing
+            setTimeout(() => {
+                setIsScanning(true); // Resume scanning
+            }, 500);
+        }
+    }, [scanResult, isScanning, handleAddProductToCart]);
+    
 
     return (
         <MainLayout>
             <div className='card'>
+
                 <div className='products-card'>
+                    <div className='search-container'>
+                        <input
+                            style={{ padding: '8px 15px', width: '300px', outline: 'none', border: '1px solid gray', borderRadius: '5px', marginBottom: '5px' }}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder='Search product name . . .'
+                        />
+                    </div>
                     <div className='product-box'>
-                    <ImageList className='row' sx={{ width: 1200, height: 840 }} cols={6}>
+                    <ImageList className='row' sx={{ width: 1180, height: 810 }} cols={6}>
                         {isLoading ? 'Loading...' : (
                             products
+                                .filter((product) => {
+                                    const searchTerm = search.toLowerCase();
+                                    if (searchTerm === '') {
+                                        return product;
+                                    } else {
+                                        const productName = `${product.name}`.toLowerCase();
+                                        return productName.includes(searchTerm);
+                                    }
+                                })
                                 .slice()
                                 .sort((a, b) => a.name.localeCompare(b.name))
                                 .map((product) => (
                                     <ImageListItem className='block' key={product.id}>
-                                        <div style={{ width: '185px', border: '3px solid maroon' }}>
+                                        <div style={{ width: '182px', border: '3px solid maroon' }}>
                                         <img
                                             src={`${product.image}?w=248&fit=crop&auto=format`}
                                             alt={product.name}
                                             loading="lazy"
-                                            style={{ width: '179px', height: '130px', objectFit: 'cover'}}
+                                            style={{ width: '176px', height: '130px', objectFit: 'contain'}}
                                         />
                                         <ImageListItemBar
                                             title={product.name}
-                                            subtitle={`₱ ${(product.price).toLocaleString()}`}
+                                            subtitle={`₱ ${parseFloat((product.price)).toLocaleString()}`}
                                             position="below"
                                             style={{ marginTop: '-10px', marginLeft: '5px' }}
                                             actionIcon={
@@ -276,9 +349,10 @@ const PosPage = () => {
                 </div>
 
                 <div className='cart-card'>
+
                     <div className='cart-box'>
                         <div className='cartReceipt'>
-                            <h1 className='title'>Cart</h1>
+                            {/* <h1 className='title'>Cart</h1> */}
                             <div style={{ display: 'none' }}>
                                 <ComponentToPrint cart={cart} totalAmount={totalAmount} tenderedCash={tenderedCash} handleChangeAmount={handleChangeAmount} ref={componentRef} />
                             </div>
@@ -293,13 +367,13 @@ const PosPage = () => {
                                 onPageChange={handleChangePage}
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                             />
-                            <Table sx={{ minWidth: 650, height: 480 }} size="small" aria-label="a dense table">
+                            <Table sx={{ minWidth: 650, height: 545 }} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><h4>Item</h4></TableCell>
-                                        <TableCell><h4>Price</h4></TableCell>
-                                        <TableCell><h4>Qty/Kg</h4></TableCell>
-                                        <TableCell><h4>Total</h4></TableCell>
+                                        <TableCell><b>Item</b></TableCell>
+                                        <TableCell style={{ textAlign: 'left' }}><b>Price</b></TableCell>
+                                        <TableCell style={{ textAlign: 'center' }}><b>Qty/Kg</b></TableCell>
+                                        <TableCell style={{ textAlign: 'left' }}><b>Total</b></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -313,24 +387,29 @@ const PosPage = () => {
                                                         <DeleteIcon color='error' />
                                                     </IconButton>
                                                     <b>{cartProduct.name}</b></TableCell>
-                                                <TableCell style={{ textAlign: 'left' }}>₱ {cartProduct.price}</TableCell>
-                                                <TableCell style={{ textAlign: 'left' }}>
-                                                    <IconButton style={{ padding: "1px 1px" }} onClick={() => addOneProductToCart(cartProduct)}>
-                                                        <AddIcon color='primary' />
-                                                    </IconButton>
-                                                    <b>{cartProduct.quantity}</b>
+                                                <TableCell style={{ textAlign: 'left', width: '120px' }}>₱ {parseFloat((cartProduct.price)).toLocaleString()}</TableCell>
+                                                <TableCell style={{ textAlign: 'right', width: '120px' }}>
                                                     {cartProduct.quantity > 1 && (
-                                                        <IconButton style={{ padding: "1px 1px" }} onClick={() => removeOneProductFromCart(cartProduct)}>
-                                                            <RemoveIcon color='error' />
+                                                        <IconButton size='small' onClick={() => removeOneProductFromCart(cartProduct)}>
+                                                            <RemoveCircleRoundedIcon color='error' />
                                                         </IconButton>
                                                     )}
+                                                    <b>{cartProduct.quantity}</b>
+                                                    <IconButton size='small' onClick={() => addProductToCart(cartProduct)}>
+                                                        <AddCircleRoundedIcon color='primary' />
+                                                    </IconButton>
                                                 </TableCell>
 
-                                                <TableCell style={{ textAlign: 'left' }}>₱ <b>{(cartProduct.totalAmount).toLocaleString()}</b></TableCell>
+                                                <TableCell style={{ textAlign: 'left', width: '130px' }}>₱ <b>{parseFloat(cartProduct.totalAmount).toLocaleString()}</b></TableCell>
                                             </TableRow>
                                         )) : 
                                         <TableRow>
-                                            <TableCell colSpan={6} align="center"><h1>No Item/s in Cart</h1></TableCell>
+                                            <TableCell colSpan={6} align="center">
+                                                <>
+                                                <ProductionQuantityLimitsRoundedIcon fontSize='large'/>
+                                                <h1>Cart empty . . .</h1>
+                                                </>
+                                            </TableCell>
                                         </TableRow>
                                     }
                                 </TableBody>
@@ -338,8 +417,8 @@ const PosPage = () => {
                         </TableContainer>
                     </div>
 
-                    <div className='total-box'>
-                        <Card className='total-box1'>
+                    <div>
+                        <Card className='total-box-outer'>
                             {cart.length > 0 && (
                                 <>
                                     <Button
@@ -350,24 +429,21 @@ const PosPage = () => {
                                     >
                                         Cart
                                     </Button>
-                                    <h3 className='total'>Total Amount:</h3>
-                                    <h3 className='title'>₱ {totalAmount.toLocaleString()}</h3>
                                 </>
                             )}
+                                <div className='total-box'>
+                                    <h3 className='total'>Total Amount:</h3>
+                                    <h3>₱ {totalAmount.toLocaleString()}</h3>
+                                </div>
                         </Card>
                     </div>
 
                     <div className='misc-box'>
                         <div className='qr-scanner'>
-                        {/* <QrScanner
-                            delay={300}
-                            onError={handleError}
-                            onScan={addProductToCart}
-                            style={{ width: '100%' }}
-                        /> */}
-                        <img src='https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg' />
+                            <div id='reader'></div>
                         </div>
 
+                        <div className='option-box'>
                         {cart.length > 0 && (
                             <>
                                 <div className='cash-number'>
@@ -375,8 +451,9 @@ const PosPage = () => {
                                         <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                                             <InputLabel htmlFor="cash-tendered">Cash Tendered</InputLabel>
                                             <FilledInput
-                                                style={{ fontWeight: 800, fontSize: '18px', width: '200px' }}
+                                                style={{ fontWeight: 800, fontSize: '18px', width: '220px' }}
                                                 id="cash-tendered"
+                                                color='black'
                                                 autoComplete='off'
                                                 value={tenderedCash}
                                                 onChange={handleTenderedCash}
@@ -387,7 +464,7 @@ const PosPage = () => {
                                     <div>
                                     <h3 className='title-change'>Change:
                                     {tenderedCash >= totalAmount && (
-                                        <> ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</>
+                                        <span className='cash-change'> ₱ {(handleChangeAmount() - totalAmount).toLocaleString()}</span>
                                     )}
                                     </h3>
                                     </div>
@@ -397,8 +474,11 @@ const PosPage = () => {
                                 </div>
                             </>
                         )}
+                        </div>
                     </div>
+
                 </div>
+
             </div>
         </MainLayout>
 

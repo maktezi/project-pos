@@ -140,10 +140,17 @@ export default function Form({csrfToken}) {
                             id="price"
                             name="price"
                             label={`Price (\u20B1)`}
-                            type='number'
+                            type='text' // Use text type for custom validation
                             value={product.price}
-                            onChange={ev => setProduct({...product, price: ev.target.value})}
-                            inputProps={{ min: 1 }}
+                            onChange={ev => {
+                                const inputValue = ev.target.value;
+                                // Regex to allow only numbers with up to 2 decimal places
+                                const regex = /^\d*\.?\d{0,2}$/;
+                                if (regex.test(inputValue) || inputValue === '') {
+                                    setProduct({...product, price: inputValue});
+                                }
+                            }}
+                            inputProps={{ min: 1, }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
